@@ -14,8 +14,12 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+h1.date-header {
     text-align: center;
+}
+
+h1.date-header em.day {
+    font-family: monospace;
 }
 
 ul {
@@ -24,6 +28,7 @@ ul {
 }
 
 li {
+    font-family: monospace;
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
@@ -34,4 +39,12 @@ li:last-child {
 
 li.today {
     background-color: palegoldenrod;
+}
+
+li.break {
+    background-color: lightgray;
+}
+
+button {
+    font-size: 150%;
 }

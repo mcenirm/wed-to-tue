@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Next 21 Days</title>
+    <title>Wednesday through Tuesday</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+    <h1 class="date-header">
+        <button id="toPrevious">&laquo;</button>
+        <em id="firstDay" class="day">Wednesday</em> &ndash; <em id="lastDay" class="day">Tuesday</em>
+        <button id="toNext">&raquo;</button>
+    </h1>
     <div class="container">
-        <h1>Three Weeks (Wed-Tue)</h1>
-        <ul id="dateList"></ul>
+        <ul id="dateList">
+            <li id="date-odd-1" class="date odd-week wednesday">...</li>
+            <li id="date-odd-2" class="date odd-week thursday">...</li>
+            <li id="date-odd-3" class="date odd-week friday">...</li>
+            <li id="date-odd-4" class="date odd-week saturday">...</li>
+            <li id="date-odd-5" class="date odd-week sunday">...</li>
+            <li id="date-odd-6" class="date odd-week monday">...</li>
+            <li id="date-odd-7" class="date odd-week tuesday">...</li>
+            <li class="break">&nbsp;</li>
+            <li id="date-even-1" class="date even-week wednesday">...</li>
+            <li id="date-even-2" class="date even-week thursday">...</li>
+            <li id="date-even-3" class="date even-week friday">...</li>
+            <li id="date-even-4" class="date even-week saturday">...</li>
+            <li id="date-even-5" class="date even-week sunday">...</li>
+            <li id="date-even-6" class="date even-week monday">...</li>
+            <li id="date-even-7" class="date even-week tuesday">...</li>
+        </ul>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,36 +1,57 @@
-function formatDate(date) {
-    const options = { weekday: 'short', month: 'short', day: '2-digit' };
-    return date.toLocaleDateString('en-US', options).replace(/(\w{3}) (\w{3}) (\d{2})/, '$1 $2 $3');
-}
+const sentinelWednesday = new Date('2025-01-08').getTime();
+const msPerDay = 86_400_000;
+const daysPerWeek = 7;
+const daysPerTwoWeeks = 2 * daysPerWeek;
+const msPerTwoWeeks = msPerDay * daysPerTwoWeeks;
+const today = msPerDay * Math.floor((new Date()).getTime() / msPerDay);
 
-function generateThreeWeeks() {
-    const dateList = document.getElementById('dateList');
-    const today = new Date();
-    
-    // Find the Wednesday of the current week
-    const currentDay = today.getDay();
-    const daysUntilWednesday = (3 - currentDay + 7) % 7; // 3 is Wednesday
-    const startDate = new Date(today);
-    startDate.setDate(today.getDate() - daysUntilWednesday - 7); // Start from the Wednesday of the previous week
+let offsetTwoWeeks = Math.floor((today - sentinelWednesday) / msPerTwoWeeks);
 
-    for (let i = 0; i < 21; i++) {
-        const nextDate = new Date(startDate);
-        nextDate.setDate(startDate.getDate() + i);
-        const formattedDate = formatDate(nextDate);
-        const listItem = document.createElement('li');
-        if (nextDate.toDateString() === today.toDateString()) {
-            listItem.classList.add('today');
-        }
-        listItem.textContent = formattedDate;
-        dateList.appendChild(listItem);
 
-        // Check if the day is Tuesday (2)
-        if (nextDate.getDay() === 2) {
-            const emptyItem = document.createElement('li');
-            emptyItem.textContent = ''; // Empty item
-            dateList.appendChild(emptyItem);
-        }
+/**
+ * @param {Date} date 
+ * @returns {string}
+ */
+function formatDateForList(date) {
+    const [dowcomma, dd, mmm] = date.toUTCString().split(' ').slice(0, 3);
+    const dow = dowcomma.replace(',', '');
+    if (dow === 'Sun' || dow == 'Sat') {
+        return dow;
+    } else {
+        return `${dow} ${mmm} ${dd} -\u00A0`;
     }
 }
 
-generateThreeWeeks();
+/**
+ * @param {Date} date 
+ * @returns {string}
+ */
+function formatDateForHeader(date) {
+    const [dd, mmm, yyyy] = date.toUTCString().split(' ').slice(1, 4);
+    return `${yyyy} ${mmm} ${dd}`;
+}
+
+function displayTwoWeeks() {
+    const firstDay = sentinelWednesday + offsetTwoWeeks * msPerTwoWeeks;
+    const firstDayAsDate = new Date(firstDay);
+    const lastDayAsDate = new Date(firstDay + (daysPerTwoWeeks - 1) * msPerDay);
+    document.getElementById('firstDay').textContent = formatDateForHeader(firstDayAsDate);
+    document.getElementById('lastDay').textContent = formatDateForHeader(lastDayAsDate);
+    for (let i = 0; i < daysPerTwoWeeks; i++) {
+        const nextDate = firstDay + i * msPerDay;
+        const formattedDate = formatDateForList(new Date(nextDate));
+        const itemId = `date-${i < daysPerWeek ? 'odd' : 'even'}-${1 + (i % daysPerWeek)}`;
+        const listItem = document.getElementById(itemId);
+        if (Math.abs(nextDate - today) < msPerDay / 2) {
+            listItem.classList.add('today');
+        } else {
+            listItem.classList.remove('today');
+        }
+        listItem.textContent = formattedDate;
+    }
+}
+
+document.getElementById('toPrevious').addEventListener('click', e => { offsetTwoWeeks--; displayTwoWeeks(); });
+document.getElementById('toNext').addEventListener('click', e => { offsetTwoWeeks++; displayTwoWeeks(); });
+
+displayTwoWeeks();
