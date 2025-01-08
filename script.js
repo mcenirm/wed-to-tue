@@ -18,6 +18,9 @@ function generateThreeWeeks() {
         nextDate.setDate(startDate.getDate() + i);
         const formattedDate = formatDate(nextDate);
         const listItem = document.createElement('li');
+        if (nextDate.toDateString() === today.toDateString()) {
+            listItem.classList.add('today');
+        }
         listItem.textContent = formattedDate;
         dateList.appendChild(listItem);
 
