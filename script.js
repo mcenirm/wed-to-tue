@@ -14,6 +14,13 @@ function generateNext21Days() {
         const listItem = document.createElement('li');
         listItem.textContent = formattedDate;
         dateList.appendChild(listItem);
+
+        // Check if the day is Tuesday (2)
+        if (nextDate.getDay() === 2) {
+            const emptyItem = document.createElement('li');
+            emptyItem.textContent = ''; // Empty item
+            dateList.appendChild(emptyItem);
+        }
     }
 }
 
